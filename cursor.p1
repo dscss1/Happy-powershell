@@ -1,0 +1,12 @@
+$shell = New-Object -ComObject Shell.Application
+$folder = $shell.Namespace('C:\Path\To\Desktop')
+$items = $folder.Items()
+$count = $items.Count
+
+while ($true) {
+    $item1 = Get-Random -Minimum 0 -Maximum $count
+    $item2 = Get-Random -Minimum 0 -Maximum $count
+    $folder.MoveHere($items.Item($item1))
+    $folder.MoveHere($items.Item($item2))
+    Start-Sleep -Seconds 10
+}
