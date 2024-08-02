@@ -19,9 +19,17 @@ while ($true) {
     
     # Ensure the two indices are not the same
     if ($item1 -ne $item2) {
-        # Swap the items on the desktop
-        $folder.MoveHere($items.Item($item1))
-        $folder.MoveHere($items.Item($item2))
+        try {
+            # Swap the items on the desktop
+            $folder.MoveHere($items.Item($item1))
+            $folder.MoveHere($items.Item($item2))
+            
+            # Log the action
+            Write-Output "Swapped items: $($items.Item($item1).Name) and $($items.Item($item2).Name)"
+        } catch {
+            # Handle any errors
+            Write-Error "An error occurred while swapping items: $_"
+        }
     }
     
     # Pause for 10 seconds
