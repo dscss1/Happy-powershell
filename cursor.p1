@@ -1,12 +1,29 @@
+# Create a Shell.Application COM object
 $shell = New-Object -ComObject Shell.Application
-$folder = $shell.Namespace('C:\Path\To\Desktop')
+
+# Retrieve the current user's desktop path dynamically
+$desktopPath = [System.Environment]::GetFolderPath('Desktop')
+
+# Access the desktop folder
+$folder = $shell.Namespace($desktopPath)
+
+# Retrieve the items on the desktop
 $items = $folder.Items()
 $count = $items.Count
 
+# Run the loop indefinitely
 while ($true) {
+    # Get two random indices to swap items
     $item1 = Get-Random -Minimum 0 -Maximum $count
     $item2 = Get-Random -Minimum 0 -Maximum $count
-    $folder.MoveHere($items.Item($item1))
-    $folder.MoveHere($items.Item($item2))
+    
+    # Ensure the two indices are not the same
+    if ($item1 -ne $item2) {
+        # Swap the items on the desktop
+        $folder.MoveHere($items.Item($item1))
+        $folder.MoveHere($items.Item($item2))
+    }
+    
+    # Pause for 10 seconds
     Start-Sleep -Seconds 10
 }
