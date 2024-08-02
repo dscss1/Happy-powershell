@@ -1,7 +1,16 @@
+# Импортируем необходимые сборки для работы с Windows Forms и Drawing
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+# Получаем разрешение основного монитора
 $screenWidth = [System.Windows.Forms.SystemInformation]::PrimaryMonitorSize.Width
 $screenHeight = [System.Windows.Forms.SystemInformation]::PrimaryMonitorSize.Height
 
+# Запускаем бесконечный цикл перемещения курсора
 while ($true) {
+    # Устанавливаем случайное положение курсора
     [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point -ArgumentList (Get-Random -Minimum 0 -Maximum $screenWidth), (Get-Random -Minimum 0 -Maximum $screenHeight)
+    
+    # Делаем паузу на 100 миллисекунд
     Start-Sleep -Milliseconds 100
 }
