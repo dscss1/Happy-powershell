@@ -1,4 +1,7 @@
+$screenWidth = [System.Windows.Forms.SystemInformation]::PrimaryMonitorSize.Width
+$screenHeight = [System.Windows.Forms.SystemInformation]::PrimaryMonitorSize.Height
+
 while ($true) {
-    [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point -ArgumentList (Get-Random -Minimum 0 -Maximum 1920), (Get-Random -Minimum 0 -Maximum 1080)
+    [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point -ArgumentList (Get-Random -Minimum 0 -Maximum $screenWidth), (Get-Random -Minimum 0 -Maximum $screenHeight)
     Start-Sleep -Milliseconds 100
 }
