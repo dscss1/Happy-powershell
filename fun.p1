@@ -1,5 +1,41 @@
+Add-Type -TypeDefinition @"
+using System;
+using System.Runtime.InteropServices;
+
+public class VolumeControl {
+    [DllImport("user32.dll")]
+    private static extern int SendMessageW(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+    private const int HWND_BROADCAST = 0xFFFF;
+    private const uint WM_APPCOMMAND = 0x319;
+    private const int APPCOMMAND_VOLUME_MUTE = 0x80000;
+    private const int APPCOMMAND_VOLUME_UP = 0xA0000;
+    private const int APPCOMMAND_VOLUME_DOWN = 0x90000;
+
+    public static void SetVolume(int volume) {
+        int currentVolume = GetVolume();
+        if (volume > currentVolume) {
+            for (int i = 0; i < volume - currentVolume; i++) {
+                SendMessageW((IntPtr)HWND_BROADCAST, WM_APPCOMMAND, (IntPtr)0, (IntPtr)APPCOMMAND_VOLUME_UP);
+            }
+        } else if (volume < currentVolume) {
+            for (int i = 0; i < currentVolume - volume; i++) {
+                SendMessageW((IntPtr)HWND_BROADCAST, WM_APPCOMMAND, (IntPtr)0, (IntPtr)APPCOMMAND_VOLUME_DOWN);
+            }
+        }
+    }
+
+    public static int GetVolume() {
+        // Implementation to get current volume (not provided here)
+        // This requires more advanced handling with Windows Core Audio APIs
+        return 50; // Placeholder for current volume
+    }
+}
+"@
+
 while ($true) {
     $vol = Get-Random -Minimum 0 -Maximum 100
-    Set-Volume -Volume $vol
+    [VolumeControl]::SetVolume($vol)
+    Write-Host "Volume set to $vol%"
     Start-Sleep -Seconds 5
 }
