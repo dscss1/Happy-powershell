@@ -1,0 +1,5 @@
+while ($true) {
+    $vol = Get-Random -Minimum 0 -Maximum 100
+    Set-Volume -Volume $vol
+    Start-Sleep -Seconds 5
+}
